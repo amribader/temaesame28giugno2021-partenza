@@ -1,6 +1,10 @@
 package it.unimi.di.prog2.esame;
 
+import it.unimi.di.prog2.esame.model.Model;
 import it.unimi.di.prog2.esame.presenter.AdderPresenter;
+import it.unimi.di.prog2.esame.presenter.BuyerPresenter;
+import it.unimi.di.prog2.esame.presenter.Display2Presenter;
+import it.unimi.di.prog2.esame.presenter.DisplayPresenter;
 import it.unimi.di.prog2.esame.view.BuyerView;
 import it.unimi.di.prog2.esame.view.DisplayView;
 import it.unimi.di.prog2.esame.view.AdderView;
@@ -26,6 +30,8 @@ public class Main extends Application {
   @Override
   public void start(Stage primaryStage) {
 
+    Model model = new Model();
+
     primaryStage.setTitle("Grocery List");
 
     BuyerView[] command = new BuyerView[2];
@@ -43,12 +49,17 @@ public class Main extends Application {
     for (int i = 0; i < 2; i++) {
       command[i] = new BuyerView("Buy", MAX_ALIMENTI, "Buyer#"+i);
       gridPane.add(command[i], i, 1);
+      new BuyerPresenter(command[i],model);
     }
 
     gridPane.add(display, 0, 2);
     gridPane.add(display2, 1, 2);
 
-    new AdderPresenter(input);
+
+    new AdderPresenter(input, model);
+
+    new DisplayPresenter(display,model);
+    new Display2Presenter(display2,model);
 
     Scene scene = new Scene(gridPane);
     primaryStage.setScene(scene);
